@@ -114,6 +114,20 @@ nmap tc :!
 " Go to definition
 nmap <silent> gd <Plug>(coc-definition)
 
+" Comment code
+
+vmap <leader>/ <plug>NERDCommenterToggle
+nmap <leader>/ <plug>NERDCommenterToggle
+
+" Move code
+
+nnoremap <S-Up> :m-2<CR>
+nnoremap <S-Down> :m+<CR>
+inoremap <S-Up> <Esc>:m-2<CR>
+inoremap <S-Down> <Esc>:m+<CR>
+
+nnoremap <leader>shift gh
+inoremap <leader>shift gh
 
 " autocmd "
 
