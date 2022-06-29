@@ -1,6 +1,5 @@
 " Plugins "
 
-
 call plug#begin()
 Plug 'sainnhe/sonokai'
 Plug 'vim-airline/vim-airline'
@@ -13,7 +12,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim' , { 'branch' : 'release' }
 Plug 'honza/vim-snippets'
-Plug 'jiangmiao/auto-pairs'
+Plug 'scrooloose/nerdcommenter'
 
 if (has("nvim"))
     Plug 'nvim-lua/plenary.nvim'
@@ -37,7 +36,7 @@ set smarttab         " insert tabs on the start of a line according to shiftwidt
 set smartindent      " Automatically inserts one extra level of indentation in some cases
 set hidden           " Hides the current buffer when a new file is openned
 set incsearch        " Incremental search
-set ignorecase       " Ingore case in search
+set ignorecase       " Ignore case in search
 set smartcase        " Consider case if there is a upper case character
 set scrolloff=8      " Minimum number of lines to keep above and below the cursor
 set signcolumn=yes   " Add a column on the left. Useful for linting
@@ -50,10 +49,10 @@ set splitright       " Create the vertical splits to the right
 set splitbelow       " Create the horizontal splits below
 set autoread         " Update vim after file update from outside
 set mouse=a          " Enable mouse support
+set showcmd          " Enable visual feedback for leader
 filetype on          " Detect and set the filetype option and trigger the FileType Event
 filetype plugin on   " Load the plugin file for the file type, if any
 filetype indent on   " Load the indent file for the file type, if any
-
 
 
 " Themes "
@@ -112,6 +111,8 @@ nmap tt :q<CR>
 " Call command shortcut
 nmap tc :!
 
+" Go to definition
+nmap <silent> gd <Plug>(coc-definition)
 
 
 " autocmd "
@@ -148,11 +149,27 @@ nmap <C-a> :NERDTreeToggle<CR>
 
 
 let g:ale_linters = {
+\   'cpp': [],
+\   'c': [],
 \}
 
 let g:ale_fixers = {
 \   '*': ['trim_whitespace'],
+\   'cpp': ['clang-format'],
+\   'c': ['clang-format'],
 \}
+
+" C/C++
+
+let g:ale_c_clangformat_options = '"-style={
+\ BasedOnStyle: google,
+\ IndentWidth: 4,
+\ ColumnLimit: 100,
+\ AllowShortBlocksOnASingleLine: Always,
+\ AllowShortFunctionsOnASingleLine: Inline,
+\ FixNamespaceComments: true,
+\ ReflowComments: false,
+\ }"'
 
 let g:ale_fix_on_save = 1
 
@@ -172,11 +189,21 @@ if (has("nvim"))
     nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 endif
 
+" Prettier "
+
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " COC "
 
 
-let g:coc_global_extensions = [ 'coc-snippets']
+let g:coc_global_extensions = [
+\ 'coc-snippets',
+\ 'coc-pairs',
+\ 'coc-tsserver',
+\ 'coc-eslint', 
+\ 'coc-prettier', 
+\ 'coc-json', 
+\ ]
 
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
 " unicode characters in the file autoload/float.vim
@@ -224,7 +251,7 @@ endfunction
 
 " Use <c-space> to trigger completion.
 if has('nvim')
-  inoremap <silent><expr> <c-c> coc#refresh()
+  inoremap <silent><expr> <c-space> coc#refresh()
 else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
