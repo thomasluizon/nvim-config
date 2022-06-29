@@ -50,6 +50,7 @@ set splitbelow       " Create the horizontal splits below
 set autoread         " Update vim after file update from outside
 set mouse=a          " Enable mouse support
 set showcmd          " Enable visual feedback for leader
+set foldmethod=syntax
 filetype on          " Detect and set the filetype option and trigger the FileType Event
 filetype plugin on   " Load the plugin file for the file type, if any
 filetype indent on   " Load the indent file for the file type, if any
@@ -214,9 +215,9 @@ let g:coc_global_extensions = [
 \ 'coc-snippets',
 \ 'coc-pairs',
 \ 'coc-tsserver',
-\ 'coc-eslint', 
-\ 'coc-prettier', 
-\ 'coc-json', 
+\ 'coc-eslint',
+\ 'coc-prettier',
+\ 'coc-json',
 \ ]
 
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
